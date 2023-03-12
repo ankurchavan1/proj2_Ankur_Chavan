@@ -22,10 +22,10 @@ def obstacle_space(x,y):
     return obs_present
 
 # taking input from the user
-print("Enter initial node cordinates")
+print("Enter start node cordinates")
 
 x_of_start_node=float(input("Enter the x coordinate of start node:"))
-y_of_start_node=float(input("Enter the y coordinate of start node"))
+y_of_start_node=float(input("Enter the y coordinate of start node:"))
 start_node=[x_of_start_node, y_of_start_node]
 
 print("Enter goal node cordinates")
@@ -113,6 +113,7 @@ cost_i=[0]
 node=start_node
 flag=0
 
+# While loop
 while(flag!=1 and candidate_nodes!=[]):
     
     # Up action
@@ -307,7 +308,7 @@ while(flag!=1 and candidate_nodes!=[]):
 if(flag==0 and candidate_nodes==[]):
     sys.exit("Path does not exist")
     
-
+# Final Path
 path=[]
 path.append(list_of_visited_nodes[-1])
 path.append(list_of_parent_nodes[-1])
@@ -335,4 +336,46 @@ path=path_array*scale_factor
 obstacle_grid_array = np.array(obstacle_grid)
 obstacle_grid = obstacle_grid_array*scale_factor
 
+# Visualization
+pygame.init()
 
+# Colors
+Black = [0, 0, 0]
+Red = [255, 0, 0]
+Blue = [0, 100, 255]
+White = [255, 255, 255]
+Green = [0, 255, 0]
+
+# Grid
+SIZE = [600*scale_factor, 250*scale_factor]
+screen = pygame.display.set_mode(SIZE)
+
+pygame.display.set_caption("Result: Path finding using Dijkstra")
+clock = pygame.time.Clock()
+done = False
+while not done:
+    for event in pygame.event.get():   
+        if event.type == pygame.QUIT:  
+            done = True   
+ 
+    screen.fill(Black)
+# Grid
+    for i in obstacle_grid:
+        pygame.draw.rect(screen, White, [i[0],250*scale_factor-i[1],scale_factor,scale_factor])
+    pygame.display.flip()
+    clock.tick(20)
+# Visited Nodes
+    for i in list_of_visited_nodes:
+        pygame.time.wait(1)
+        pygame.draw.rect(screen, Green, [i[0],250*scale_factor-i[1],scale_factor,scale_factor])
+        pygame.display.flip()
+# Path
+    for j in path[::-1]:
+        pygame.time.wait(1)
+        pygame.draw.rect(screen, Red, [j[0], 250*scale_factor-j[1], scale_factor,scale_factor])
+        pygame.display.flip()
+    pygame.display.flip()
+
+    pygame.time.wait(3000)
+    done = True
+pygame.quit()
