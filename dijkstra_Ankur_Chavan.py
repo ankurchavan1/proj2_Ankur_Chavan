@@ -21,11 +21,7 @@ def obstacle_space(x,y):
         obs_present=1
     return obs_present
 
-
-print("Enter robot parameters")
-rad=float(input("radius =  "))
-clr=float(input("clearence =  "))
-
+# taking input from the user
 print("Enter initial node cordinates")
 
 x_of_start_node=float(input("Enter the x coordinate of start node:"))
@@ -36,17 +32,12 @@ print("Enter goal node cordinates")
 x_of_goal_node=float(input("Enter the x coordinate of goal node:"))
 y_of_goal_node=float(input("Enter the y coordinate of goal node:"))
 goal_node=[x_of_goal_node,y_of_goal_node]
-# r=int(input("Enter Resolution (must be an integer value) =  "))
-
-# goal_node= [n / r for n in goal_node]
-# start_node=[m / r for m in start_node]
-
-rows=150
-
-coloums=250
 
 
+rows=250
+coloums=600
 
+# Function for all 8 movements
 def move_left(current_node):
     new_node=[0,0]
     new_node[0]=current_node[0]-1
@@ -102,3 +93,246 @@ def move_bottom_right(current_node):
     new_node[1]=current_node[1]+1
     cost=1.42
     return new_node,cost
+
+# Dijkstra Implementation
+parent_node=[start_node]
+candidate_nodes=[start_node]
+list_of_parent_nodes=[]
+list_of_visited_nodes=[]
+costs_list=[]
+
+# Checking the validity of the allowed start and goal nodes
+if (obstacle_space(goal_node[0],goal_node[1])==1 or obstacle_space(start_node[0],start_node[1])):
+    sys.exit("Goal Node or start node lies within obstackle space, please enter valid nodes")
+
+if (start_node[0] not in range(0,601) or goal_node[0] not in range(0,601) or start_node[1] not in range(0,251) or goal_node[1] not in range(0,251)):
+    sys.exit("Goal node or start node not within the allowed boundary limits")
+
+x=0
+cost_i=[0]
+node=start_node
+flag=0
+
+while(flag!=1 and candidate_nodes!=[]):
+    
+    # Up action
+    new_nd,cost=move_up(node)
+    if (new_nd[1]>=0 and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+            
+            
+    # down action
+    new_nd,cost=move_down(node)
+    if (new_nd[1]<=rows and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+            
+
+            
+    # left action
+    new_nd,cost=move_left(node)
+    if (new_nd[0]>=0 and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+                                  
+                
+    # right action
+    new_nd,cost=move_right(node)
+    if (new_nd[0]<=coloums and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+             
+    # top left action
+    new_nd,cost=move_top_left(node)
+    if (new_nd[1]>=0 and new_nd[0]>=0 and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+            
+    # top right action
+    new_nd,cost=move_top_right(node)
+    if (new_nd[0]<=coloums and new_nd[1]>=0 and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+            
+    # bottom left action
+    new_nd,cost=move_bottom_left(node)
+    if (new_nd[1]<=rows and new_nd[0]>=0 and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+            
+    # bottom right action
+    new_nd,cost=move_bottom_right(node)
+    if (new_nd[1]<=rows and new_nd[0]<=coloums and obstacle_space(new_nd[0],new_nd[1])!=1):
+        if new_nd not in list_of_visited_nodes:
+            indices_lst=range(0,len(candidate_nodes))
+            indices_lst=indices_lst[::-1]
+            check=0
+            for index_i in indices_lst:
+                if(new_nd == candidate_nodes[index_i]):
+                    check=1
+                    if(cost_i[index_i]>=(cost_i[x]+cost)):
+                        parent_node[index_i]=node
+                        cost_i[index_i]=round((cost_i[x]+cost),1)
+                        break
+                    
+                    
+            if (check!=1):
+                parent_node.append(node)
+                candidate_nodes.append(new_nd)
+                cost_i.append(round((cost+cost_i[x]),1))
+
+    # Appending all the lists      
+    list_of_parent_nodes.append(parent_node.pop(x))
+    list_of_visited_nodes.append(candidate_nodes.pop(x))
+    costs_list.append(cost_i.pop(x))
+    
+    if(list_of_visited_nodes[-1]==goal_node):
+        flag=1
+        
+    if(flag!=1 and candidate_nodes!=[]):
+        x=cost_i.index(min(cost_i))
+        node=candidate_nodes[x][:]
+    
+if(flag==0 and candidate_nodes==[]):
+    sys.exit("Path does not exist")
+    
+
+path=[]
+path.append(list_of_visited_nodes[-1])
+path.append(list_of_parent_nodes[-1])
+x=list_of_parent_nodes[-1]
+i=1
+while(x!=start_node):
+    if(list_of_visited_nodes[-i]==x):
+        path.append(list_of_parent_nodes[-i])
+        x=list_of_parent_nodes[-i]
+    i=i+1      
+
+
+obstacle_grid = []
+for i in range(0,601):
+    for j in range(0,251):
+        q=obstacle_space(i,j)
+        if q == 1:
+            obstacle_grid.append([i,j])
+
+scale_factor=2
+vn_list = np.array(list_of_visited_nodes)
+list_of_visited_nodes=vn_list*scale_factor
+path_array = np.array(path)
+path=path_array*scale_factor
+obstacle_grid_array = np.array(obstacle_grid)
+obstacle_grid = obstacle_grid_array*scale_factor
+
+
