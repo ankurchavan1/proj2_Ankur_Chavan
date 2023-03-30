@@ -1,19 +1,23 @@
-# proj2_Ankur_Chavan
-ENPM661 Project 2: Implementation of Dijkstra Algorith
+# ENPM661 Project 2: Implementation of Dijkstra Algorithm
 
-The code takes the start node and goal node positions as input from the user.
-In order to see the implementation input the x and y coordinates of the start node and goal node.
-The code will give the visual representation of all the node exploration while avoiding the obstacles and shows the shortest path in the end.
+This repository contains the implementation of Dijkstra Algorithm for path planning in a 2D grid environment with obstacles. 
+The code takes the start node and goal node positions as input from the user and provides the visual representation of all the node exploration while avoiding the obstacles. In the end, it shows the shortest path from start to goal node.
 
-Libraries used:
+# Libraries Used
+1. pygame
+2. math
+3. sys
+4. numpy
 
-pygame
-math
-sys
-numpy
+# Usage
+Clone the repository on your local machine.
+Open the terminal and navigate to the repository directory.
+Run the command python main.py to start the program.
+Input the x and y coordinates of the start node and goal node as prompted.
+The program will display the visualization of the exploration of all the nodes in the environment while avoiding obstacles.
+Once the exploration is complete, the shortest path from start to goal node will be displayed.
+Close the window to terminate the program.
 
-Note:
-While calculting the obstacle space, I have hard coded the clearance while defining the obstacle space itself.
-To make it more modular the ideal way must be to take clearance as variable and incorporate it in the half equations.
-
-
+# Note
+While calculating the obstacle space, the clearance value has been hard-coded while defining the obstacle space itself. 
+To make it more modular, the ideal way is to take the clearance as a variable and incorporate it into the half equations.
